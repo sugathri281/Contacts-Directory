@@ -671,12 +671,14 @@ function renderUlbSnapshot(ulbName){
   const district = (mapping && mapping.district) || (commissioner&&commissioner.district) || (mayor&&mayor.district) || (mla&&mla.district) || '';
   const collector = district ? contactCache.find(c=>c.category==='collector' && normalize(c.district)===normalize(district)) : null;
   const jc = district ? contactCache.find(c=>c.category==='jc' && normalize(c.district)===normalize(district)) : null;
+  const localMinister = district ? contactCache.find(c=>c.category==='lmin' && c.homeDistrict && normalize(c.homeDistrict)===normalize(district)) : null;
+  const inchargeMinister = district ? contactCache.find(c=>c.category==='icmin' && c.districtsIncharge && c.districtsIncharge.split(',').some(v=>normalize(v)===normalize(district))) : null;
   const uda = mapping && mapping.udaName ? contactCache.find(c=>c.category==='uda' && normalize(c.udaName)===normalize(mapping.udaName)) : null;
   const lsmp = mapping && mapping.lokSabhaConstituency ? contactCache.find(c=>c.category==='lsmp' && normalize(c.constituency)===normalize(mapping.lokSabhaConstituency)) : null;
   const rsmp = mapping && mapping.rsMPName ? contactCache.find(c=>c.category==='rsmp' && normalize(c.name)===normalize(mapping.rsMPName)) : null;
 
   let note = '';
-  if(!mapping) note = `No ULB mapping row found for "${escapeHtml(ulbName)}" yet — MLA/Collector/JC below are inferred where possible, but UDA, Lok Sabha and Rajya Sabha links need a mapping row. ${CAN_WRITE?'Add one via "Manage ULB Mapping".':''}`;
+  if(!mapping) note = `No ULB mapping row found for "${escapeHtml(ulbName)}" yet — MLA/Collector/JC/Ministers below are inferred where possible, but UDA, Lok Sabha and Rajya Sabha links need a mapping row. ${CAN_WRITE?'Add one via "Manage ULB Mapping".':''}`;
 
   panel.innerHTML = `<div class="ulb-snapshot">
     <h2>${escapeHtml(ulbName)}${district?' · '+escapeHtml(district):''}</h2>
@@ -685,6 +687,8 @@ function renderUlbSnapshot(ulbName){
       ${miniCard('ULB Commissioner', commissioner)}
       ${miniCard('Mayor / Chairperson', mayor)}
       ${miniCard('MLA', mla)}
+      ${miniCard('Local Minister', localMinister)}
+      ${miniCard('In-charge Minister', inchargeMinister)}
       ${miniCard('Collector', collector)}
       ${miniCard('Joint Collector', jc)}
       ${miniCard('UDA Chairperson', uda)}
