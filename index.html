@@ -334,6 +334,40 @@ function downloadBlob(filename, data){
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 
+// Compresses an uploaded photo down to a small JPEG data: URI so it can be stored
+// directly on the Firestore document (no Storage/billing needed). Targets ~60KB
+// raw (~80KB as base64) — plenty for a small identifying photo on a contact card.
+function compressImageToDataUrl(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Could not read the image file.'));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Could not decode the image file.'));
+      img.onload = () => {
+        let maxDim = 280, quality = 0.72;
+        const targetBytes = 60000;
+        let dataUrl = '';
+        for(let pass=0; pass<6; pass++){
+          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+          const w = Math.max(1, Math.round(img.width * scale));
+          const h = Math.max(1, Math.round(img.height * scale));
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          dataUrl = canvas.toDataURL('image/jpeg', quality);
+          const approxBytes = dataUrl.length * 0.75;
+          if(approxBytes <= targetBytes || (maxDim <= 120 && quality <= 0.4)) break;
+          if(quality > 0.42) quality -= 0.12; else maxDim = Math.round(maxDim * 0.75);
+        }
+        resolve(dataUrl);
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 /* =========================================================
    APP STATE
 ========================================================= */
@@ -347,11 +381,10 @@ async function initCapabilities(){
   const status = document.getElementById('connStatus');
   let authModRef;
   try{
-    const [{ initializeApp }, firestoreMod, authMod, storageMod] = await Promise.all([
+    const [{ initializeApp }, firestoreMod, authMod] = await Promise.all([
       import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"),
       import("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"),
       import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"),
-      import("https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js"),
     ]);
     authModRef = authMod;
     const fbApp = initializeApp(YOUR_FIREBASE_CONFIG);
@@ -359,7 +392,6 @@ async function initCapabilities(){
     fbAuth = authMod.getAuth(fbApp);
     fbSignInWithEmailAndPassword = authMod.signInWithEmailAndPassword;
     fbSignOut = authMod.signOut;
-    const storage = storageMod.getStorage(fbApp);
 
     // Thin shim so the rest of the app can keep using db.collection(x).doc(id).update/delete/add/onSnapshot(...)
     db = {
@@ -382,18 +414,18 @@ async function initCapabilities(){
         };
       }
     };
+    // No Firebase Storage (that now requires the paid Blaze plan just to switch on).
+    // Photos are compressed client-side into a small JPEG and stored as a data: URI
+    // directly on the contact document — needs nothing beyond Firestore + Auth.
     assetsCap = {
       async upload(file){
-        const path = 'photos/' + Date.now() + '_' + Math.random().toString(36).slice(2) + '_' + (file.name||'photo');
-        const sRef = storageMod.ref(storage, path);
-        await storageMod.uploadBytes(sRef, file);
-        const url = await storageMod.getDownloadURL(sRef);
+        const url = await compressImageToDataUrl(file);
         return { url };
       }
     };
   }catch(e){
     status.innerHTML = '<span class="conn-dot err"></span>Could not load Firebase — check YOUR_FIREBASE_CONFIG';
-    document.getElementById('grid').innerHTML = '<div class="empty-note">Firebase failed to initialise. Confirm the config values at the top of the script and that Firestore/Storage/Auth are enabled in the Firebase console.</div>';
+    document.getElementById('grid').innerHTML = '<div class="empty-note">Firebase failed to initialise. Confirm the config values at the top of the script and that Firestore and Authentication are enabled in the Firebase console.</div>';
     return;
   }
   status.innerHTML = '<span class="conn-dot ok"></span>Live';
@@ -578,6 +610,12 @@ function subscribeContacts(){
     contactCache = snap.docs.map(d=>({id:d.id, ...d.data()}));
     renderChips(); refreshFilterOptions(); renderGrid(); populateUlbSelect(); refreshUlbSnapshotIfOpen();
   }, err=>{
+    // Category tabs are static (not data-dependent) — show them even if the read was denied,
+    // so the page doesn't look broken while the real cause (rules) gets fixed.
+    renderChips();
+    document.getElementById('grid').innerHTML = `<div class="empty-note">⚠ Could not load contacts: ${escapeHtml(err.message)}.<br><br>
+      This almost always means the Firestore security rules haven't been published yet.<br>
+      Firebase Console → Firestore Database → Rules → paste in <code>firestore.rules</code> → click <b>Publish</b> (not just save).</div>`;
     toast('Could not load contacts: ' + err.message);
   });
 }
@@ -593,7 +631,7 @@ function subscribeUlbMap(){
     ulbMapCache = snap.docs.map(d=>({id:d.id, ...d.data()}));
     populateUlbSelect(); refreshUlbSnapshotIfOpen();
   }, err=>{
-    toast('Could not load ULB mapping: ' + err.message);
+    toast('Could not load ULB mapping: ' + err.message + ' — check Firestore rules are published.');
   });
 }
 
