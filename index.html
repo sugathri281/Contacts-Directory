@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Contacts">
 <meta name="theme-color" content="#122736">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <title>Important Contacts — Minister, MA&UD, Government of Andhra Pradesh</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -91,16 +95,7 @@ a{color:var(--navy);}
 .ulb-snapshot{background:var(--surface);border:2px solid var(--marigold);border-radius:var(--radius-m);padding:14px;margin-bottom:16px;}
 .ulb-snapshot h2{margin:0 0 2px;font-family:var(--font-serif);font-size:1.05rem;color:var(--navy-dark);}
 .ulb-snapshot .note{font-size:.76rem;color:var(--ink-soft);margin-bottom:10px;line-height:1.5;}
-.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
-.mini-card{border:1px solid var(--border);border-radius:var(--radius-s);padding:9px;display:flex;gap:9px;align-items:center;background:var(--bg);}
-.mini-card.empty{color:var(--ink-faint);font-style:italic;font-size:.78rem;background:transparent;border-style:dashed;}
-.mini-photo{width:44px;height:52px;border-radius:6px;object-fit:cover;flex:0 0 auto;background:var(--navy-tint);}
-.mini-fallback{width:44px;height:52px;border-radius:6px;flex:0 0 auto;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;}
-.mini-body{min-width:0;}
-.mini-role{font-size:.65rem;text-transform:uppercase;letter-spacing:.03em;color:var(--marigold-dark);font-weight:700;}
-.mini-name{font-size:.85rem;font-weight:600;color:var(--ink);}
-.mini-call{font-size:.74rem;}
-.mini-call a{color:var(--navy);text-decoration:none;font-weight:600;}
+
 
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
 .ccard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-m);padding:14px;box-shadow:var(--shadow-1);display:flex;gap:14px;}
@@ -169,11 +164,7 @@ table.rep th{background:var(--navy-tint);color:var(--navy);font-weight:700;font-
   .who{width:100%;justify-content:space-between;}
   .ulb-lookup-row{flex-direction:column;}
   .ulb-lookup-row select, .ulb-lookup-row .btn{width:100%;}
-  .mini-grid{grid-template-columns:1fr 1fr;}
   .page-head h1{font-size:1.2rem;}
-}
-@media (max-width:400px){
-  .mini-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -654,10 +645,16 @@ function populateUlbSelect(){
 function refreshUlbSnapshotIfOpen(){ if(currentUlbFocus) renderUlbSnapshot(currentUlbFocus); }
 
 function miniCard(role, c){
-  if(!c) return `<div class="mini-card empty">${escapeHtml(role)}<br>Not linked yet</div>`;
-  const photo = c.photoUrl ? `<img class="mini-photo" src="${c.photoUrl}" alt="">` : `<div class="mini-fallback">${initials(c.name)}</div>`;
-  const call = c.primaryMobile ? `<div class="mini-call"><button type="button" class="mobile-btn" onclick="openCallSheet('${escapeHtml(c.primaryMobile)}')">📞 ${escapeHtml(c.primaryMobile)}</button></div>` : '';
-  return `<div class="mini-card">${photo}<div class="mini-body"><div class="mini-role">${escapeHtml(role)}</div><div class="mini-name">${escapeHtml(c.name)}</div>${call}</div></div>`;
+  if(!c) return `<div class="ccard" style="opacity:.55;">
+    <div class="avatar-fallback">?</div>
+    <div class="body"><span class="badge badge-navy">${escapeHtml(role)}</span><h3 class="muted" style="font-style:italic;font-size:.95rem;">Not linked yet</h3></div>
+  </div>`;
+  const photo = c.photoUrl ? `<img class="photo" src="${c.photoUrl}" alt="">` : `<div class="avatar-fallback">${initials(c.name)}</div>`;
+  const call = c.primaryMobile ? `<div class="call-line"><button type="button" class="mobile-btn" onclick="openCallSheet('${escapeHtml(c.primaryMobile)}')">📞 ${escapeHtml(c.primaryMobile)}</button></div>` : '';
+  return `<div class="ccard">
+    ${photo}
+    <div class="body"><span class="badge badge-navy">${escapeHtml(role)}</span><h3>${escapeHtml(c.name)}</h3>${call}</div>
+  </div>`;
 }
 function renderUlbSnapshot(ulbName){
   currentUlbFocus = ulbName;
@@ -684,7 +681,7 @@ function renderUlbSnapshot(ulbName){
   panel.innerHTML = `<div class="ulb-snapshot">
     <h2>${escapeHtml(ulbName)}${district?' · '+escapeHtml(district):''}</h2>
     ${note?`<div class="note">${note}</div>`:''}
-    <div class="mini-grid">
+    <div class="card-grid">
       ${miniCard('ULB Commissioner', commissioner)}
       ${miniCard('Mayor / Chairperson', mayor)}
       ${miniCard('MLA', mla)}
@@ -1132,6 +1129,10 @@ document.getElementById('ulbSelect').addEventListener('change', e=> renderUlbSna
 document.getElementById('clearUlbBtn').addEventListener('click', ()=>{ document.getElementById('ulbSelect').value=''; renderUlbSnapshot(''); });
 document.getElementById('manageUlbMapBtn').addEventListener('click', openUlbMapManager);
 document.getElementById('ulbMapCsvFile').addEventListener('change', handleUlbMapCsvUpload);
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
+}
 
 initCapabilities();
 </script>
