@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#122736">
+<title>Important Contacts — Minister, MA&UD, Government of Andhra Pradesh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F3EC; --bg-alt:#EEE8D9; --surface:#FFFFFF;
+  --ink:#241F16; --ink-soft:#645C49; --ink-faint:#8C846E;
+  --border:#DCD3BC; --border-soft:#EAE3D2;
+  --navy:#1C3A52; --navy-dark:#122736; --navy-tint:#E4EBEF;
+  --marigold:#BD7A22; --marigold-dark:#8F5D18; --marigold-tint:#F4E4C6;
+  --green:#2E6B47; --green-tint:#DEEBE1;
+  --red:#A63A2A; --red-tint:#F5DFD8;
+  --purple:#5B4B8A; --purple-tint:#E9E4F3;
+  --radius-s:3px; --radius-m:6px;
+  --font-serif:'IBM Plex Serif',serif; --font-sans:'IBM Plex Sans',sans-serif;
+  --shadow-1: 0 1px 2px rgba(28,22,10,0.08); --shadow-2: 0 6px 20px rgba(28,22,10,0.16);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{margin:0;font-family:var(--font-sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+button,input,select,textarea{font-family:inherit;}
+a{color:var(--navy);}
+:focus-visible{outline:2px solid var(--marigold-dark);outline-offset:2px;}
+.hidden{display:none !important;}
+.small{font-size:.78rem;color:var(--ink-soft);}
+.muted{color:var(--ink-faint);}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:600;letter-spacing:.01em;padding:2px 9px;border-radius:100px;line-height:1.6;}
+.badge-navy{background:var(--navy-tint);color:var(--navy);}
+.badge-marigold{background:var(--marigold-tint);color:var(--marigold-dark);}
+.badge-green{background:var(--green-tint);color:var(--green);}
+.badge-red{background:var(--red-tint);color:var(--red);}
+
+/* ---- top bar ---- */
+.topbar{background:var(--navy-dark);color:#EFE9DA;padding:12px 18px;position:sticky;top:0;z-index:30;
+  box-shadow:0 2px 10px rgba(0,0,0,.15); border-bottom:3px solid var(--marigold);}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1320px;margin:0 auto;}
+.wordmark{font-family:var(--font-serif);font-weight:700;font-size:1.2rem;color:#fff;display:flex;align-items:center;gap:8px;}
+.wordmark .dot{color:var(--marigold);}
+.wordmark small{display:block;font-family:var(--font-sans);font-weight:400;font-size:.63rem;color:rgba(239,233,218,.6);margin-top:1px;}
+.who{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#authStatus{color:#fff;font-weight:600;}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);display:inline-block;margin-right:5px;}
+.conn-dot.ok{background:var(--green);}
+.conn-dot.err{background:var(--red);}
+
+/* ---- layout ---- */
+.wrap{max-width:1320px;margin:0 auto;padding:18px 18px 60px;}
+.page-head{margin-bottom:14px;}
+.page-head h1{font-family:var(--font-serif);font-size:1.4rem;margin:0 0 4px;font-weight:600;color:var(--navy-dark);}
+.page-head p{margin:0;color:var(--ink-soft);font-size:.85rem;max-width:700px;line-height:1.5;}
+
+.chips{display:flex;flex-wrap:nowrap;gap:6px;margin:14px 0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:5px;}
+.chip{border:1px solid var(--border);background:var(--surface);color:var(--ink-soft);font-size:.76rem;font-weight:600;
+  padding:8px 13px;border-radius:100px;cursor:pointer;white-space:nowrap;flex:0 0 auto;min-height:36px;}
+.chip .n{opacity:.65;font-weight:500;margin-left:4px;}
+.chip.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+.toolbar{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.toolbar input[type=search]{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface);font-size:.9rem;min-height:42px;}
+.toolbar-filters{display:flex;gap:8px;flex-wrap:wrap;}
+.toolbar-filters select{flex:1;min-width:150px;padding:10px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--surface);font-size:.82rem;color:var(--ink-soft);min-height:40px;}
+.toolbar-actions{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:3px;}
+.toolbar-actions .btn{flex:0 0 auto;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 14px;border-radius:var(--radius-s);min-height:40px;
+  font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid transparent;white-space:nowrap;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:hover{filter:brightness(1.12);}
+.btn-marigold{background:var(--marigold);color:#fff;}
+.btn-marigold:hover{filter:brightness(1.08);}
+.btn-ghost{background:transparent;color:var(--navy);border-color:var(--border);}
+.btn-ghost:hover{background:var(--navy-tint);}
+.btn-danger{background:transparent;color:var(--red);border-color:var(--red-tint);}
+.btn-danger:hover{background:var(--red-tint);}
+.btn-sm{padding:7px 11px;font-size:.74rem;min-height:34px;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+
+/* ---- global ULB lookup ---- */
+.ulb-lookup{background:var(--navy-tint);border:1px solid var(--border);border-radius:var(--radius-m);padding:12px 14px;margin-bottom:14px;}
+.ulb-lookup label{display:block;font-size:.7rem;font-weight:700;color:var(--navy);margin-bottom:7px;text-transform:uppercase;letter-spacing:.03em;}
+.ulb-lookup-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ulb-lookup-row select{flex:1;min-width:180px;padding:10px;border:1px solid var(--border);border-radius:var(--radius-s);min-height:42px;font-size:.85rem;}
+.ulb-snapshot{background:var(--surface);border:2px solid var(--marigold);border-radius:var(--radius-m);padding:14px;margin-bottom:16px;}
+.ulb-snapshot h2{margin:0 0 2px;font-family:var(--font-serif);font-size:1.05rem;color:var(--navy-dark);}
+.ulb-snapshot .note{font-size:.76rem;color:var(--ink-soft);margin-bottom:10px;line-height:1.5;}
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.mini-card{border:1px solid var(--border);border-radius:var(--radius-s);padding:9px;display:flex;gap:9px;align-items:center;background:var(--bg);}
+.mini-card.empty{color:var(--ink-faint);font-style:italic;font-size:.78rem;background:transparent;border-style:dashed;}
+.mini-photo{width:44px;height:52px;border-radius:6px;object-fit:cover;flex:0 0 auto;background:var(--navy-tint);}
+.mini-fallback{width:44px;height:52px;border-radius:6px;flex:0 0 auto;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;}
+.mini-body{min-width:0;}
+.mini-role{font-size:.65rem;text-transform:uppercase;letter-spacing:.03em;color:var(--marigold-dark);font-weight:700;}
+.mini-name{font-size:.85rem;font-weight:600;color:var(--ink);}
+.mini-call{font-size:.74rem;}
+.mini-call a{color:var(--navy);text-decoration:none;font-weight:600;}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;}
+.ccard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-m);padding:14px;box-shadow:var(--shadow-1);display:flex;gap:14px;}
+.ccard .photo{width:112px;height:132px;border-radius:10px;object-fit:cover;flex:0 0 auto;background:var(--navy-tint);border:1px solid var(--border);}
+.ccard .avatar-fallback{width:112px;height:132px;border-radius:10px;flex:0 0 auto;background:var(--navy);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--font-serif);font-size:1.9rem;}
+.ccard .body{flex:1;min-width:0;display:flex;flex-direction:column;}
+.ccard h3{margin:6px 0 6px;font-size:1.08rem;font-family:var(--font-serif);font-weight:600;color:var(--ink);}
+.ccard .line{font-size:.82rem;color:var(--ink-soft);line-height:1.55;}
+.ccard .line .line-label{font-weight:700;color:var(--ink);}
+.ccard .call-line{font-size:.83rem;margin-top:7px;display:flex;flex-wrap:wrap;gap:10px;}
+.ccard .call-line a{text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px;}
+.mobile-btn{background:none;border:none;padding:0;font:inherit;color:var(--navy);font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;min-height:32px;}
+.mobile-btn:hover{text-decoration:underline;}
+.ccard .actions{margin-top:auto;padding-top:10px;display:flex;gap:8px;}
+.icon-btn{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-s);padding:5px 11px;
+  font-size:.74rem;font-weight:700;color:var(--navy);cursor:pointer;display:inline-flex;align-items:center;gap:4px;}
+.icon-btn:hover{background:var(--navy-tint);}
+.icon-btn.danger{color:var(--red);border-color:var(--red-tint);}
+.icon-btn.danger:hover{background:var(--red-tint);}
+.empty-note{padding:40px 10px;text-align:center;color:var(--ink-faint);font-size:.88rem;grid-column:1/-1;}
+
+/* ---- confirm dialog (native confirm() is blocked in the sandboxed artifact frame) ---- */
+.confirm-box{background:var(--surface);border-radius:var(--radius-m);max-width:360px;width:100%;box-shadow:var(--shadow-2);padding:20px;margin:auto;}
+.confirm-box p{margin:0 0 16px;font-size:.9rem;color:var(--ink);}
+.confirm-box .row{display:flex;justify-content:flex-end;gap:8px;}
+
+/* ---- modal ---- */
+.modal-backdrop{position:fixed;inset:0;background:rgba(28,22,10,.45);display:flex;align-items:flex-start;justify-content:center;
+  padding:26px 14px;overflow-y:auto;z-index:100;}
+.modal{background:var(--surface);border-radius:var(--radius-m);max-width:620px;width:100%;box-shadow:var(--shadow-2);margin:auto;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
+.modal-head h2{margin:0;font-family:var(--font-serif);font-size:1.1rem;color:var(--navy-dark);}
+.modal-close{background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--ink-faint);}
+.modal-body{padding:18px 20px;max-height:70vh;overflow-y:auto;}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field{margin-bottom:2px;}
+.field.full{grid-column:1/-1;}
+.field label{display:block;font-size:.74rem;font-weight:600;color:var(--ink-soft);margin-bottom:4px;}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-s);background:var(--bg);font-size:.85rem;color:var(--ink);}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy);background:#fff;}
+.photo-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.photo-preview{width:70px;height:70px;border-radius:50%;object-fit:cover;background:var(--navy-tint);border:1px solid var(--border);}
+.section-title{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--marigold-dark);margin:16px 0 8px;}
+
+/* ---- toast ---- */
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--navy-dark);color:#fff;padding:10px 18px;
+  border-radius:var(--radius-s);font-size:.83rem;box-shadow:var(--shadow-2);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;}
+#toast.show{opacity:1;}
+
+.bulk-panel{background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius-m);padding:16px;margin-bottom:16px;}
+.file-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border-soft);font-size:.8rem;}
+.file-row:last-child{border-bottom:none;}
+.file-row select{padding:5px 7px;font-size:.76rem;border:1px solid var(--border);border-radius:var(--radius-s);}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.rep{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:8px;min-width:480px;}
+table.rep th,table.rep td{border:1px solid var(--border);padding:6px 8px;text-align:left;}
+table.rep th{background:var(--navy-tint);color:var(--navy);font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.03em;}
+
+@media (max-width:640px){
+  .form-grid{grid-template-columns:1fr;}
+  .wrap{padding:14px 10px 50px;}
+  .card-grid{grid-template-columns:1fr;}
+  .who .role{display:none;}
+  .who{width:100%;justify-content:space-between;}
+  .ulb-lookup-row{flex-direction:column;}
+  .ulb-lookup-row select, .ulb-lookup-row .btn{width:100%;}
+  .mini-grid{grid-template-columns:1fr 1fr;}
+  .page-head h1{font-size:1.2rem;}
+}
+@media (max-width:400px){
+  .mini-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-row">
+    <div class="wordmark">📇 Important<span class="dot">Contacts</span>
+      <small>MA&amp;UD Department, Government of Andhra Pradesh</small>
+    </div>
+    <div class="who">
+      <span class="small" id="connStatus"><span class="conn-dot"></span>Connecting…</span>
+      <span class="small" id="authStatus"></span>
+      <button class="btn btn-ghost btn-sm" id="signInBtn">🔒 Staff Sign In</button>
+      <button class="btn btn-ghost btn-sm hidden" id="signOutBtn">Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="page-head">
+    <h1>Important Contacts Directory</h1>
+    <p>Public representatives and officials of Urban Local Bodies and UDAs — find anyone in a few taps, see their photo, and call directly.</p>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <div id="ulbLookupWrap">
+    <div class="ulb-lookup">
+      <label for="ulbSelect">🔎 ULB Lookup — see every linked official for one ULB at a glance</label>
+      <div class="ulb-lookup-row">
+        <select id="ulbSelect"><option value="">Select a ULB…</option></select>
+        <button class="btn btn-ghost btn-sm hidden" id="clearUlbBtn">✕ Clear</button>
+        <button class="btn btn-ghost btn-sm" id="manageUlbMapBtn">🔗 Manage ULB Mapping</button>
+      </div>
+    </div>
+    <div id="ulbSnapshot"></div>
+  </div>
+
+  <div class="toolbar">
+    <input type="search" id="search" placeholder="Global search — name, constituency, district, mobile, ULB…">
+    <div class="toolbar-filters">
+      <select id="districtFilter"><option value="">All districts / areas</option></select>
+      <select id="partyFilter"><option value="">All parties</option></select>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn btn-ghost btn-sm" id="templateBtn">⭳ Template</button>
+      <button class="btn btn-ghost btn-sm" id="bulkCsvBtn">⭱ Bulk upload</button>
+      <button class="btn btn-ghost btn-sm" id="bulkPhotoBtn">🖼 Photos</button>
+      <button class="btn btn-ghost btn-sm" id="exportBtn">⭳ Export</button>
+      <button class="btn btn-marigold btn-sm" id="addBtn">+ Add contact</button>
+    </div>
+  </div>
+
+  <div id="bulkPhotoPanel" class="bulk-panel hidden"></div>
+
+  <div class="card-grid" id="grid"><div class="empty-note">Loading contacts…</div></div>
+</div>
+
+<input type="file" id="csvFile" accept=".csv" class="hidden">
+<input type="file" id="photoFiles" accept="image/*" multiple class="hidden">
+<input type="file" id="ulbMapCsvFile" accept=".csv" class="hidden">
+<div id="modalRoot"></div>
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   CATEGORY CONFIGURATION
+========================================================= */
+const CATEGORIES = [
+  { key:'mla',      label:'MLA',                 code:'MLA',    idField:'constituency', idLabel:'Assembly Constituency',
+    fields:[ {key:'party',label:'Political Party'}, {key:'constituency',label:'Constituency'},
+      {key:'constituencyNo',label:'Constituency No.'}, {key:'district',label:'District'},
+      {key:'ulbs',label:'ULB(s) in Constituency', placeholder:'Comma-separated if more than one'} ] },
+  { key:'lsmp',     label:'Lok Sabha MP',         code:'LSMP',   idField:'constituency', idLabel:'Parliamentary Constituency',
+    fields:[ {key:'party',label:'Political Party'}, {key:'constituency',label:'Parliamentary Constituency'},
+      {key:'districts',label:'District(s) Covered'} ] },
+  { key:'rsmp',     label:'Rajya Sabha MP',       code:'RSMP',   idField:'name', idLabel:'Full Name',
+    fields:[ {key:'party',label:'Political Party'}, {key:'termFrom',label:'Term From (Year)'}, {key:'termTo',label:'Term To (Year)'} ] },
+  { key:'lmin',     label:'Local Minister',       code:'LMIN',   idField:'homeDistrict', idLabel:'Home District',
+    fields:[ {key:'portfolio',label:'Department / Portfolio'}, {key:'homeDistrict',label:'Home District'},
+      {key:'homeConstituency',label:'Home Constituency'} ] },
+  { key:'icmin',    label:'In-charge Minister',   code:'ICMIN',  idField:'districtsIncharge', idLabel:'District In-charge',
+    fields:[ {key:'portfolio',label:'Department / Portfolio'}, {key:'districtsIncharge',label:'District(s) In-charge'} ] },
+  { key:'collector',label:'Collector',            code:'COLL',   idField:'district', idLabel:'District',
+    fields:[ {key:'district',label:'District'}, {key:'cadre',label:'Cadre / Batch (optional)'} ] },
+  { key:'jc',       label:'Joint Collector',      code:'JC',     idField:'district', idLabel:'District',
+    fields:[ {key:'district',label:'District'}, {key:'charge',label:'Charge / Portfolio'} ] },
+  { key:'ulb',      label:'Mayor / Chairperson',  code:'ULB',    idField:'ulbName', idLabel:'ULB Name',
+    fields:[ {key:'ulbName',label:'ULB Name'},
+      {key:'ulbType',label:'ULB Type', options:['Municipal Corporation','Municipality','Nagar Panchayat']},
+      {key:'district',label:'District'}, {key:'party',label:'Political Party'} ] },
+  { key:'uda',      label:'UDA Chairperson',      code:'UDA',    idField:'udaName', idLabel:'UDA Name',
+    fields:[ {key:'udaName',label:'UDA Name'}, {key:'districts',label:'District(s) Covered'} ] },
+  { key:'commissioner', label:'ULB Commissioner', code:'COMM',   idField:'ulbName', idLabel:'ULB Name',
+    fields:[ {key:'ulbName',label:'ULB Name'},
+      {key:'ulbType',label:'ULB Type', options:['Municipal Corporation','Municipality','Nagar Panchayat']},
+      {key:'district',label:'District'}, {key:'cadre',label:'Cadre / Grade (optional)'} ] },
+];
+const COMMON_FIELDS = [
+  {key:'name', label:'Name'},
+  {key:'primaryMobile', label:'Primary Mobile'},
+  {key:'altMobile', label:'Alternate Mobile'},
+  {key:'email', label:'Email'},
+  {key:'officeAddress', label:'Office Address'},
+  {key:'notes', label:'Notes'},
+];
+// The ULB Master Mapping table — links a ULB to the wider geography/jurisdictions
+// so the global ULB Lookup can cross-reference MLA, Collector, JC, UDA, LS and RS MP records.
+const ULB_MAP_FIELDS = [
+  {key:'ulbName', label:'ULB Name'},
+  {key:'district', label:'District'},
+  {key:'constituency', label:'Assembly Constituency'},
+  {key:'udaName', label:'UDA Name (optional)'},
+  {key:'lokSabhaConstituency', label:'Lok Sabha Constituency'},
+  {key:'rsMPName', label:'Rajya Sabha MP (optional — not geographically fixed)'},
+];
+function catByKey(k){ return CATEGORIES.find(c=>c.key===k); }
+function catByCode(code){ return CATEGORIES.find(c=>c.code.toLowerCase()===String(code).toLowerCase()); }
+function templateColumns(cat){ return COMMON_FIELDS.concat(cat.fields); }
+function escapeHtml(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function initials(name){ return (name||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function normalize(v){
+  return (v==null?'':String(v))
+    .toLowerCase()
+    .replace(/[_\-]+/g,' ')      // underscores/hyphens count as spaces
+    .replace(/[^a-z0-9\s]/g,'')  // drop punctuation: (SC), (ST), periods, apostrophes...
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._h); toast._h=setTimeout(()=>t.classList.remove('show'),2600); }
+
+/* =========================================================
+   FIREBASE BACKEND
+   Fill in YOUR_FIREBASE_CONFIG below with the values from
+   Firebase Console → Project Settings → General → "Your apps" → Web app.
+   (Loaded via dynamic import() so this stays a normal classic script —
+   that keeps every function below reachable from inline onclick="" handlers.)
+========================================================= */
+const YOUR_FIREBASE_CONFIG = {
+  apiKey: "REPLACE_ME",
+  authDomain: "REPLACE_ME.firebaseapp.com",
+  projectId: "REPLACE_ME",
+  storageBucket: "REPLACE_ME.appspot.com",
+  messagingSenderId: "REPLACE_ME",
+  appId: "REPLACE_ME"
+};
+
+let fbAuth=null, fbSignInWithEmailAndPassword=null, fbSignOut=null;
+let db=null, assetsCap=null;
+
+function downloadBlob(filename, data){
+  const blob = new Blob([data], { type:'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+/* =========================================================
+   APP STATE
+========================================================= */
+let CAN_WRITE=false;
+let contactCache = [];
+let ulbMapCache = [];
+let activeCategory = '';
+let unsubscribe = null, unsubscribeUlbMap = null;
+
+async function initCapabilities(){
+  const status = document.getElementById('connStatus');
+  let authModRef;
+  try{
+    const [{ initializeApp }, firestoreMod, authMod, storageMod] = await Promise.all([
+      import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"),
+      import("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"),
+      import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"),
+      import("https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js"),
+    ]);
+    authModRef = authMod;
+    const fbApp = initializeApp(YOUR_FIREBASE_CONFIG);
+    const fsDb = firestoreMod.getFirestore(fbApp);
+    fbAuth = authMod.getAuth(fbApp);
+    fbSignInWithEmailAndPassword = authMod.signInWithEmailAndPassword;
+    fbSignOut = authMod.signOut;
+    const storage = storageMod.getStorage(fbApp);
+
+    // Thin shim so the rest of the app can keep using db.collection(x).doc(id).update/delete/add/onSnapshot(...)
+    db = {
+      collection(name){
+        const colRef = firestoreMod.collection(fsDb, name);
+        return {
+          doc(id){
+            const dRef = firestoreMod.doc(fsDb, name, id);
+            return {
+              async update(data){ return firestoreMod.updateDoc(dRef, data); },
+              async delete(){ return firestoreMod.deleteDoc(dRef); },
+            };
+          },
+          async add(data){ const r = await firestoreMod.addDoc(colRef, data); return { id: r.id }; },
+          onSnapshot(cb, errCb){
+            return firestoreMod.onSnapshot(colRef, snap=>{
+              cb({ docs: snap.docs.map(d=>({ id:d.id, data:()=>d.data() })) });
+            }, errCb);
+          },
+        };
+      }
+    };
+    assetsCap = {
+      async upload(file){
+        const path = 'photos/' + Date.now() + '_' + Math.random().toString(36).slice(2) + '_' + (file.name||'photo');
+        const sRef = storageMod.ref(storage, path);
+        await storageMod.uploadBytes(sRef, file);
+        const url = await storageMod.getDownloadURL(sRef);
+        return { url };
+      }
+    };
+  }catch(e){
+    status.innerHTML = '<span class="conn-dot err"></span>Could not load Firebase — check YOUR_FIREBASE_CONFIG';
+    document.getElementById('grid').innerHTML = '<div class="empty-note">Firebase failed to initialise. Confirm the config values at the top of the script and that Firestore/Storage/Auth are enabled in the Firebase console.</div>';
+    return;
+  }
+  status.innerHTML = '<span class="conn-dot ok"></span>Live';
+
+  authModRef.onAuthStateChanged(fbAuth, user=>{
+    CAN_WRITE = !!user;
+    document.getElementById('authStatus').textContent = user ? ('Signed in: ' + (user.email||'')) : '';
+    document.getElementById('signInBtn').classList.toggle('hidden', !!user);
+    document.getElementById('signOutBtn').classList.toggle('hidden', !user);
+    applyWritePermissions();
+    renderGrid(); refreshUlbSnapshotIfOpen();
+  });
+
+  document.getElementById('signInBtn').addEventListener('click', openSignInModal);
+  document.getElementById('signOutBtn').addEventListener('click', ()=> fbSignOut(fbAuth));
+  if(location.hash === '#edit') openSignInModal();
+
+  subscribeContacts();
+  subscribeUlbMap();
+}
+function openSignInModal(){
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `<div class="modal-backdrop" id="signBackdrop">
+    <div class="modal" style="max-width:360px;">
+      <div class="modal-head"><h2>Staff Sign In</h2><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="field full" style="margin-bottom:10px;"><label>Email</label><input id="signEmail" type="email"></div>
+        <div class="field full"><label>Password</label><input id="signPass" type="password"></div>
+        <div class="small muted" style="margin-top:10px;">Staff accounts are created by an administrator in the Firebase console (Authentication → Add user) — this isn't self-signup.</div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="signInSubmit">Sign In</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('signInSubmit').addEventListener('click', async ()=>{
+    const email = document.getElementById('signEmail').value.trim();
+    const pass = document.getElementById('signPass').value;
+    if(!email || !pass){ toast('Enter email and password.'); return; }
+    try{ await fbSignInWithEmailAndPassword(fbAuth, email, pass); closeModal(); toast('Signed in.'); }
+    catch(e){ toast('Sign-in failed: ' + (e.code||e.message)); }
+  });
+  document.getElementById('signBackdrop').addEventListener('click', e=>{ if(e.target.id==='signBackdrop') closeModal(); });
+}
+
+function applyWritePermissions(){
+  // Auth state can change during a session (sign in / sign out), so this must
+  // both hide AND un-hide — not just add the class once at load.
+  ['addBtn','bulkCsvBtn','bulkPhotoBtn','manageUlbMapBtn'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', !CAN_WRITE);
+  });
+}
+
+/* =========================================================
+   CHIPS / TOOLBAR SETUP
+========================================================= */
+function renderChips(){
+  const wrap = document.getElementById('chips');
+  const counts = {}; contactCache.forEach(c=> counts[c.category]=(counts[c.category]||0)+1);
+  const all = [{key:'',label:'All'}].concat(CATEGORIES.map(c=>({key:c.key,label:c.label})));
+  wrap.innerHTML = all.map(c=>{
+    const n = c.key ? (counts[c.key]||0) : contactCache.length;
+    return `<button class="chip ${activeCategory===c.key?'active':''}" data-key="${c.key}">${escapeHtml(c.label)}<span class="n">${n}</span></button>`;
+  }).join('');
+  wrap.querySelectorAll('.chip').forEach(b=> b.addEventListener('click', ()=>{ activeCategory=b.dataset.key; renderChips(); renderGrid(); }));
+  document.getElementById('ulbLookupWrap').classList.toggle('hidden', activeCategory !== '');
+}
+
+function refreshFilterOptions(){
+  const distVals = new Set(), partyVals = new Set();
+  contactCache.forEach(c=>{
+    ['district','homeDistrict','districtsIncharge'].forEach(k=>{ if(c[k]) c[k].split(',').forEach(v=>v.trim()&&distVals.add(v.trim())); });
+    ['districts'].forEach(k=>{ if(c[k]) c[k].split(',').forEach(v=>v.trim()&&distVals.add(v.trim())); });
+    if(c.party) partyVals.add(c.party.trim());
+  });
+  const df = document.getElementById('districtFilter'), pf = document.getElementById('partyFilter');
+  const curD = df.value, curP = pf.value;
+  df.innerHTML = '<option value="">All districts / areas</option>' + [...distVals].sort().map(v=>`<option ${v===curD?'selected':''}>${escapeHtml(v)}</option>`).join('');
+  pf.innerHTML = '<option value="">All parties</option>' + [...partyVals].sort().map(v=>`<option ${v===curP?'selected':''}>${escapeHtml(v)}</option>`).join('');
+}
+
+/* =========================================================
+   CONTACT GRID
+========================================================= */
+function subtitleLines(cat, c){
+  // Each entry is {label, value} so the card always shows a clear header for every piece of information.
+  let rows;
+  switch(cat.key){
+    case 'mla': rows = [
+      {label:'Constituency', value:c.constituency},
+      {label:'District', value:c.district},
+      {label:'Party', value:c.party},
+      {label:'ULBs in Constituency', value:c.ulbs} ]; break;
+    case 'lsmp': rows = [
+      {label:'Parliamentary Constituency', value:c.constituency},
+      {label:'Party', value:c.party},
+      {label:'Districts Covered', value:c.districts} ]; break;
+    case 'rsmp': rows = [
+      {label:'Party', value:c.party},
+      {label:'Term', value:(c.termFrom||c.termTo) ? ((c.termFrom||'?')+' – '+(c.termTo||'?')) : ''} ]; break;
+    case 'lmin': rows = [
+      {label:'Portfolio', value:c.portfolio},
+      {label:'Home District', value:c.homeDistrict},
+      {label:'Home Constituency', value:c.homeConstituency} ]; break;
+    case 'icmin': rows = [
+      {label:'Portfolio', value:c.portfolio},
+      {label:'District(s) In-charge', value:c.districtsIncharge} ]; break;
+    case 'collector': rows = [
+      {label:'District', value:c.district},
+      {label:'Cadre / Batch', value:c.cadre} ]; break;
+    case 'jc': rows = [
+      {label:'District', value:c.district},
+      {label:'Charge', value:c.charge} ]; break;
+    case 'ulb': rows = [
+      {label:'ULB Name', value:c.ulbName},
+      {label:'ULB Type', value:c.ulbType},
+      {label:'District', value:c.district},
+      {label:'Party', value:c.party} ]; break;
+    case 'uda': rows = [
+      {label:'UDA Name', value:c.udaName},
+      {label:'Districts Covered', value:c.districts} ]; break;
+    case 'commissioner': rows = [
+      {label:'ULB Name', value:c.ulbName},
+      {label:'ULB Type', value:c.ulbType},
+      {label:'District', value:c.district},
+      {label:'Cadre / Grade', value:c.cadre} ]; break;
+    default: rows = [];
+  }
+  return rows.filter(r=>r.value);
+}
+function matchesFilters(c){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const dist = document.getElementById('districtFilter').value;
+  const party = document.getElementById('partyFilter').value;
+  if(activeCategory && c.category !== activeCategory) return false;
+  if(party && c.party !== party) return false;
+  if(dist){
+    const hay = [c.district,c.homeDistrict,c.districtsIncharge,c.districts].filter(Boolean).join(', ');
+    if(!hay.split(',').map(s=>s.trim()).includes(dist)) return false;
+  }
+  if(q){
+    const hay = [c.name,c.primaryMobile,c.altMobile,c.email,c.officeAddress,c.constituency,c.district,c.homeDistrict,
+      c.homeConstituency,c.districtsIncharge,c.districts,c.ulbName,c.ulbs,c.ulbType,c.udaName,c.designation,c.wing,
+      c.cadre,c.charge,c.portfolio,c.party,c.notes].filter(Boolean).join(' ').toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  return true;
+}
+function renderGrid(){
+  const grid = document.getElementById('grid');
+  const rows = contactCache.filter(matchesFilters).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  if(!rows.length){ grid.innerHTML = '<div class="empty-note">No contacts match your search / filters.</div>'; return; }
+  grid.innerHTML = rows.map(c=>{
+    const cat = catByKey(c.category) || {label:c.category,key:c.category};
+    const sub = subtitleLines(cat, c);
+    const photo = c.photoUrl ? `<img class="photo" src="${c.photoUrl}" alt="">` : `<div class="avatar-fallback">${initials(c.name)}</div>`;
+    const calls = [];
+    if(c.primaryMobile) calls.push(`<button type="button" class="mobile-btn" onclick="openCallSheet('${escapeHtml(c.primaryMobile)}')">📞 ${escapeHtml(c.primaryMobile)}</button>`);
+    if(c.altMobile) calls.push(`<button type="button" class="mobile-btn" onclick="openCallSheet('${escapeHtml(c.altMobile)}')">📞 ${escapeHtml(c.altMobile)} <span class="muted small">(alt)</span></button>`);
+    return `<div class="ccard">
+      ${photo}
+      <div class="body">
+        <span class="badge badge-navy">${escapeHtml(cat.label)}</span>
+        <h3>${escapeHtml(c.name)}</h3>
+        ${sub.map(r=>`<div class="line"><span class="line-label">${escapeHtml(r.label)}:</span> ${escapeHtml(r.value)}</div>`).join('')}
+        ${c.email?`<div class="line"><span class="line-label">Email:</span> ${escapeHtml(c.email)}</div>`:''}
+        ${c.officeAddress?`<div class="line"><span class="line-label">Office:</span> ${escapeHtml(c.officeAddress)}</div>`:''}
+        <div class="call-line">${calls.join('')}</div>
+        ${CAN_WRITE?`<div class="actions"><button class="icon-btn" onclick="openContactModal('${c.id}')">✏ Edit</button><button class="icon-btn danger" onclick="deleteContact('${c.id}')">🗑 Delete</button></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* =========================================================
+   REALTIME SUBSCRIPTION
+========================================================= */
+function subscribeContacts(){
+  if(unsubscribe) unsubscribe();
+  unsubscribe = db.collection('contacts').onSnapshot(snap=>{
+    contactCache = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    renderChips(); refreshFilterOptions(); renderGrid(); populateUlbSelect(); refreshUlbSnapshotIfOpen();
+  }, err=>{
+    toast('Could not load contacts: ' + err.message);
+  });
+}
+
+/* =========================================================
+   GLOBAL ULB LOOKUP & ULB MASTER MAPPING
+========================================================= */
+let currentUlbFocus = '';
+
+function subscribeUlbMap(){
+  if(unsubscribeUlbMap) unsubscribeUlbMap();
+  unsubscribeUlbMap = db.collection('ulbmap').onSnapshot(snap=>{
+    ulbMapCache = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    populateUlbSelect(); refreshUlbSnapshotIfOpen();
+  }, err=>{
+    toast('Could not load ULB mapping: ' + err.message);
+  });
+}
+
+function allKnownUlbNames(){
+  const set = new Set();
+  ulbMapCache.forEach(m=> m.ulbName && set.add(m.ulbName.trim()));
+  contactCache.forEach(c=>{
+    if(c.category==='commissioner' && c.ulbName) set.add(c.ulbName.trim());
+    if(c.category==='ulb' && c.ulbName) set.add(c.ulbName.trim());
+    if(c.category==='mla' && c.ulbs) c.ulbs.split(',').forEach(v=> v.trim() && set.add(v.trim()));
+  });
+  return [...set].sort((a,b)=>a.localeCompare(b));
+}
+function populateUlbSelect(){
+  const sel = document.getElementById('ulbSelect');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Select a ULB…</option>' + allKnownUlbNames().map(n=>`<option ${n===cur?'selected':''}>${escapeHtml(n)}</option>`).join('');
+  if(cur && !allKnownUlbNames().includes(cur)){ currentUlbFocus=''; }
+}
+function refreshUlbSnapshotIfOpen(){ if(currentUlbFocus) renderUlbSnapshot(currentUlbFocus); }
+
+function miniCard(role, c){
+  if(!c) return `<div class="mini-card empty">${escapeHtml(role)}<br>Not linked yet</div>`;
+  const photo = c.photoUrl ? `<img class="mini-photo" src="${c.photoUrl}" alt="">` : `<div class="mini-fallback">${initials(c.name)}</div>`;
+  const call = c.primaryMobile ? `<div class="mini-call"><button type="button" class="mobile-btn" onclick="openCallSheet('${escapeHtml(c.primaryMobile)}')">📞 ${escapeHtml(c.primaryMobile)}</button></div>` : '';
+  return `<div class="mini-card">${photo}<div class="mini-body"><div class="mini-role">${escapeHtml(role)}</div><div class="mini-name">${escapeHtml(c.name)}</div>${call}</div></div>`;
+}
+function renderUlbSnapshot(ulbName){
+  currentUlbFocus = ulbName;
+  const panel = document.getElementById('ulbSnapshot');
+  document.getElementById('clearUlbBtn').classList.toggle('hidden', !ulbName);
+  if(!ulbName){ panel.innerHTML=''; return; }
+  const mapping = ulbMapCache.find(m=> normalize(m.ulbName)===normalize(ulbName));
+  const commissioner = contactCache.find(c=>c.category==='commissioner' && normalize(c.ulbName)===normalize(ulbName));
+  const mayor = contactCache.find(c=>c.category==='ulb' && normalize(c.ulbName)===normalize(ulbName));
+  const mla = contactCache.find(c=>c.category==='mla' && (
+    (c.ulbs && c.ulbs.split(',').some(v=>normalize(v)===normalize(ulbName))) ||
+    (mapping && mapping.constituency && normalize(c.constituency)===normalize(mapping.constituency))
+  ));
+  const district = (mapping && mapping.district) || (commissioner&&commissioner.district) || (mayor&&mayor.district) || (mla&&mla.district) || '';
+  const collector = district ? contactCache.find(c=>c.category==='collector' && normalize(c.district)===normalize(district)) : null;
+  const jc = district ? contactCache.find(c=>c.category==='jc' && normalize(c.district)===normalize(district)) : null;
+  const uda = mapping && mapping.udaName ? contactCache.find(c=>c.category==='uda' && normalize(c.udaName)===normalize(mapping.udaName)) : null;
+  const lsmp = mapping && mapping.lokSabhaConstituency ? contactCache.find(c=>c.category==='lsmp' && normalize(c.constituency)===normalize(mapping.lokSabhaConstituency)) : null;
+  const rsmp = mapping && mapping.rsMPName ? contactCache.find(c=>c.category==='rsmp' && normalize(c.name)===normalize(mapping.rsMPName)) : null;
+
+  let note = '';
+  if(!mapping) note = `No ULB mapping row found for "${escapeHtml(ulbName)}" yet — MLA/Collector/JC below are inferred where possible, but UDA, Lok Sabha and Rajya Sabha links need a mapping row. ${CAN_WRITE?'Add one via "Manage ULB Mapping".':''}`;
+
+  panel.innerHTML = `<div class="ulb-snapshot">
+    <h2>${escapeHtml(ulbName)}${district?' · '+escapeHtml(district):''}</h2>
+    ${note?`<div class="note">${note}</div>`:''}
+    <div class="mini-grid">
+      ${miniCard('ULB Commissioner', commissioner)}
+      ${miniCard('Mayor / Chairperson', mayor)}
+      ${miniCard('MLA', mla)}
+      ${miniCard('Collector', collector)}
+      ${miniCard('Joint Collector', jc)}
+      ${miniCard('UDA Chairperson', uda)}
+      ${miniCard('Lok Sabha MP', lsmp)}
+      ${miniCard('Rajya Sabha MP', rsmp)}
+    </div>
+  </div>`;
+}
+
+function openUlbMapManager(){
+  if(!CAN_WRITE){ toast('You have view-only access.'); return; }
+  renderUlbMapManagerModal();
+}
+function renderUlbMapManagerModal(){
+  const root = document.getElementById('modalRoot');
+  const rowsHtml = ulbMapCache.slice().sort((a,b)=>(a.ulbName||'').localeCompare(b.ulbName||'')).map(m=>`
+    <tr>
+      <td>${escapeHtml(m.ulbName)}</td><td>${escapeHtml(m.district)}</td><td>${escapeHtml(m.constituency)}</td>
+      <td>${escapeHtml(m.udaName)}</td><td>${escapeHtml(m.lokSabhaConstituency)}</td><td>${escapeHtml(m.rsMPName)}</td>
+      <td><button class="icon-btn" onclick="editUlbMapRow('${m.id}')">✏</button> <button class="icon-btn danger" onclick="deleteUlbMapRow('${m.id}')">🗑</button></td>
+    </tr>`).join('');
+  root.innerHTML = `<div class="modal-backdrop" id="mBackdrop">
+    <div class="modal" style="max-width:820px;">
+      <div class="modal-head"><h2>Manage ULB Mapping</h2><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <p class="small">This table links each ULB to its District, Assembly Constituency, UDA and Lok Sabha Constituency, so the ULB Lookup can automatically pull in the right MLA, Collector, Joint Collector, UDA Chairperson and Lok Sabha MP. Rajya Sabha MPs aren't tied to a fixed area, so link one manually only if you want a specific RS MP shown for this ULB.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn btn-ghost btn-sm" onclick="downloadUlbMapTemplate()">⭳ CSV template</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ulbMapCsvFile').click()">⭱ Bulk upload</button>
+          <button class="btn btn-marigold btn-sm" onclick="openUlbMapRowForm(null)">+ Add mapping row</button>
+        </div>
+        <div class="table-scroll"><table class="rep">
+          <thead><tr><th>ULB</th><th>District</th><th>Constituency</th><th>UDA</th><th>Lok Sabha</th><th>Rajya Sabha MP</th><th></th></tr></thead>
+          <tbody>${rowsHtml || '<tr><td colspan="7" class="small muted">No mapping rows yet.</td></tr>'}</tbody>
+        </table></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    </div>
+  </div>`;
+  document.getElementById('mBackdrop').addEventListener('click', e=>{ if(e.target.id==='mBackdrop') closeModal(); });
+}
+function openUlbMapRowForm(id){
+  const m = id ? ulbMapCache.find(x=>x.id===id) : null;
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `<div class="modal-backdrop" id="mBackdrop2">
+    <div class="modal">
+      <div class="modal-head"><h2>${m?'Edit':'Add'} ULB mapping row</h2><button class="modal-close" onclick="renderUlbMapManagerModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-grid">
+          ${ULB_MAP_FIELDS.map(f=>`<div class="field${f.key==='ulbName'?' full':''}"><label>${f.label}</label><input id="um_${f.key}" value="${m?escapeHtml(m[f.key]||''):''}"></div>`).join('')}
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="renderUlbMapManagerModal()">Cancel</button>
+        <button class="btn btn-primary" id="umSaveBtn">${m?'Save changes':'Add row'}</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('umSaveBtn').addEventListener('click', ()=>saveUlbMapRow(id));
+}
+async function saveUlbMapRow(id){
+  const data = {};
+  ULB_MAP_FIELDS.forEach(f=>{ const el=document.getElementById('um_'+f.key); if(el) data[f.key]=el.value.trim(); });
+  if(!data.ulbName){ toast('Please enter a ULB name.'); return; }
+  try{
+    if(id) await db.collection('ulbmap').doc(id).update(data);
+    else await db.collection('ulbmap').add(data);
+    renderUlbMapManagerModal();
+    toast('ULB mapping saved.');
+  }catch(e){ toast('Could not save mapping: ' + (e.message||e.code)); }
+}
+function editUlbMapRow(id){ openUlbMapRowForm(id); }
+async function deleteUlbMapRow(id){
+  const ok = await customConfirm('Delete this ULB mapping row?');
+  if(!ok) return;
+  try{ await db.collection('ulbmap').doc(id).delete(); renderUlbMapManagerModal(); toast('Mapping row removed.'); }
+  catch(e){ toast('Could not delete: ' + (e.message||e.code)); }
+}
+async function downloadUlbMapTemplate(){
+  const header = ULB_MAP_FIELDS.map(f=>f.label).join(',');
+  const csv = header + '\n' + 'Example ULB,Example District,Example Constituency,Example UDA,Example Lok Sabha Constituency,\n';
+  downloadBlob('ULB_Mapping_template.csv', csv);
+}
+async function handleUlbMapCsvUpload(e){
+  const file = e.target.files[0]; if(!file) return;
+  const text = await file.text();
+  const lines = text.split(/\r?\n/).filter(l=>l.trim().length);
+  if(lines.length<2){ toast('No data rows found.'); e.target.value=''; return; }
+  const headerMap = {}; ULB_MAP_FIELDS.forEach(f=> headerMap[f.label.toLowerCase()] = f.key);
+  const headers = parseCsvLine(lines[0]).map(h=>h.trim().toLowerCase());
+  const existingByName = new Map(ulbMapCache.map(m=>[normalize(m.ulbName), m.id]));
+  let added=0, updated=0, failed=0;
+  for(let i=1;i<lines.length;i++){
+    const vals = parseCsvLine(lines[i]);
+    const row = {};
+    headers.forEach((h,idx)=>{ const key=headerMap[h]; if(key) row[key]=(vals[idx]||'').trim(); });
+    if(!row.ulbName) continue;
+    try{
+      const key = normalize(row.ulbName);
+      if(existingByName.has(key)){ await db.collection('ulbmap').doc(existingByName.get(key)).update(row); updated++; }
+      else{ await db.collection('ulbmap').add(row); added++; }
+    }catch(err){ failed++; }
+  }
+  toast(`ULB mapping: ${added} added, ${updated} updated${failed?', '+failed+' failed':''}.`);
+  renderUlbMapManagerModal();
+  e.target.value='';
+}
+
+/* =========================================================
+   ADD / EDIT CONTACT
+========================================================= */
+let pendingPhotoFile = null;
+function openContactModal(id){
+  if(!CAN_WRITE){ toast('You have view-only access.'); return; }
+  const c = id ? contactCache.find(x=>x.id===id) : null;
+  pendingPhotoFile = null;
+  const defaultCat = c ? c.category : (activeCategory || CATEGORIES[0].key);
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+  <div class="modal-backdrop" id="mBackdrop">
+    <div class="modal">
+      <div class="modal-head"><h2>${c?'Edit contact':'Add contact'}</h2><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="photo-row">
+          <img class="photo-preview" id="photoPreview" src="${c&&c.photoUrl?c.photoUrl:''}" style="${c&&c.photoUrl?'':'display:none'}">
+          <div class="avatar-fallback" id="photoFallback" style="${c&&c.photoUrl?'display:none':''}">${initials(c?c.name:'')}</div>
+          <div>
+            <input type="file" accept="image/*" id="photoInput">
+            <div class="small muted">Optional. JPEG or PNG.</div>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Category</label>
+          <select id="fCategory">${CATEGORIES.map(cc=>`<option value="${cc.key}" ${cc.key===defaultCat?'selected':''}>${cc.label}</option>`).join('')}</select>
+        </div>
+        <div class="form-grid" id="formGrid"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="saveBtn">${c?'Save changes':'Add contact'}</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('photoInput').addEventListener('change', e=>{
+    const f = e.target.files[0]; if(!f) return;
+    pendingPhotoFile = f;
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      const img = document.getElementById('photoPreview');
+      img.src = ev.target.result; img.style.display='';
+      document.getElementById('photoFallback').style.display='none';
+    };
+    reader.readAsDataURL(f);
+  });
+  document.getElementById('fCategory').addEventListener('change', ()=> renderFormFields(catByKey(document.getElementById('fCategory').value), c));
+  renderFormFields(catByKey(defaultCat), c);
+  document.getElementById('saveBtn').addEventListener('click', ()=> saveContact(id));
+  document.getElementById('mBackdrop').addEventListener('click', e=>{ if(e.target.id==='mBackdrop') closeModal(); });
+}
+function renderFormFields(cat, c){
+  const grid = document.getElementById('formGrid');
+  const all = COMMON_FIELDS.concat(cat.fields);
+  grid.innerHTML = all.map(f=>{
+    const full = ['name','officeAddress','notes','ulbs'].includes(f.key) ? ' full' : '';
+    const val = c ? escapeHtml(c[f.key]||'') : '';
+    if(f.options){
+      return `<div class="field${full}"><label>${f.label}</label><select id="ff_${f.key}">
+        <option value=""></option>${f.options.map(o=>`<option ${c&&c[f.key]===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+    }
+    if(f.key==='notes'){
+      return `<div class="field${full}"><label>${f.label}</label><textarea id="ff_${f.key}" rows="2">${val}</textarea></div>`;
+    }
+    return `<div class="field${full}"><label>${f.label}</label><input id="ff_${f.key}" value="${val}" placeholder="${f.placeholder||''}"></div>`;
+  }).join('');
+}
+async function saveContact(id){
+  const category = document.getElementById('fCategory').value;
+  const cat = catByKey(category);
+  const data = { category };
+  COMMON_FIELDS.concat(cat.fields).forEach(f=>{
+    const el = document.getElementById('ff_'+f.key);
+    if(el) data[f.key] = el.value.trim();
+  });
+  if(!data.name){ toast('Please enter a name.'); return; }
+  const btn = document.getElementById('saveBtn'); btn.disabled = true; btn.textContent='Saving…';
+  try{
+    if(pendingPhotoFile && assetsCap){
+      const up = await assetsCap.upload(pendingPhotoFile);
+      data.photoUrl = up.url;
+    }
+    if(id){
+      await db.collection('contacts').doc(id).update(data);
+      logAudit('Updated contact: ' + data.name);
+    }else{
+      await db.collection('contacts').add({ ...data, createdAt: new Date().toISOString() });
+      logAudit('Added contact: ' + data.name);
+    }
+    closeModal();
+    toast(id?'Contact updated.':'Contact added.');
+  }catch(e){
+    toast('Could not save: ' + (e.message||e.code||'error'));
+    btn.disabled=false; btn.textContent = id?'Save changes':'Add contact';
+  }
+}
+function openCallSheet(number){
+  const digits = String(number).replace(/\D/g,'');
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `<div class="modal-backdrop" id="callBackdrop">
+    <div class="confirm-box">
+      <p style="text-align:center;font-weight:700;">${escapeHtml(number)}</p>
+      <div class="row" style="flex-direction:column;gap:8px;">
+        <a class="btn btn-primary" style="width:100%;" href="tel:${escapeHtml(number)}" onclick="setTimeout(closeModal,150)">📞 Call</a>
+        <a class="btn btn-marigold" style="width:100%;" href="https://wa.me/${digits}" target="_blank" rel="noopener" onclick="setTimeout(closeModal,150)">💬 Call on WhatsApp</a>
+        <button class="btn btn-ghost" style="width:100%;" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('callBackdrop').addEventListener('click', e=>{ if(e.target.id==='callBackdrop') closeModal(); });
+}
+function customConfirm(message){
+  return new Promise(resolve=>{
+    const root = document.getElementById('modalRoot');
+    root.innerHTML = `<div class="modal-backdrop" id="cBackdrop">
+      <div class="confirm-box">
+        <p>${escapeHtml(message)}</p>
+        <div class="row">
+          <button class="btn btn-ghost" id="cNo">Cancel</button>
+          <button class="btn btn-marigold" id="cYes">Delete</button>
+        </div>
+      </div>
+    </div>`;
+    const cleanup = (val)=>{ root.innerHTML=''; resolve(val); };
+    document.getElementById('cYes').addEventListener('click', ()=>cleanup(true));
+    document.getElementById('cNo').addEventListener('click', ()=>cleanup(false));
+    document.getElementById('cBackdrop').addEventListener('click', e=>{ if(e.target.id==='cBackdrop') cleanup(false); });
+  });
+}
+async function deleteContact(id){
+  const c = contactCache.find(x=>x.id===id);
+  // Native window.confirm() is silently ignored inside this artifact's sandboxed frame
+  // ("allow-modals" is not granted), so a custom in-page dialog is used instead.
+  const ok = await customConfirm('Delete '+(c?c.name:'this contact')+'? This cannot be undone.');
+  if(!ok) return;
+  try{
+    await db.collection('contacts').doc(id).delete();
+    logAudit('Deleted contact: ' + (c?c.name:id));
+    toast('Contact removed.');
+  }catch(e){ toast('Could not delete: '+e.message); }
+}
+function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
+
+/* =========================================================
+   AUDIT LOG (lightweight, best-effort)
+========================================================= */
+async function logAudit(action){
+  if(!db) return;
+  try{
+    let actorId = null;
+    actorId = fbAuth && fbAuth.currentUser ? fbAuth.currentUser.uid : null;
+    await db.collection('audit').add({ action, actorId: actorId||null, at: new Date().toISOString() });
+  }catch(e){ /* non-critical */ }
+}
+
+/* =========================================================
+   CSV TEMPLATE DOWNLOAD
+========================================================= */
+function csvEscape(v){ v = (v==null?'':String(v)); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+async function downloadTemplate(){
+  const cat = activeCategory ? catByKey(activeCategory) : null;
+  if(!cat){ toast('Select a category tab first, then download its template.'); return; }
+  const cols = templateColumns(cat);
+  const header = cols.map(c=>c.label).join(',');
+  const example = cols.map(c=> c.key==='name' ? 'Full Name' : (c.options ? c.options[0] : '')).join(',');
+  const csv = header + '\n' + example + '\n';
+  const filename = 'ImportantContacts_' + cat.code + '_template.csv';
+  downloadBlob(filename, csv);
+}
+
+/* =========================================================
+   CSV BULK UPLOAD
+========================================================= */
+function parseCsvLine(line){
+  const result = []; let cur='', inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(inQ){ if(ch==='"'){ if(line[i+1]==='"'){cur+='"';i++;} else inQ=false; } else cur+=ch; }
+    else { if(ch==='"') inQ=true; else if(ch===','){ result.push(cur); cur=''; } else cur+=ch; }
+  }
+  result.push(cur); return result;
+}
+async function handleCsvUpload(e){
+  const file = e.target.files[0]; if(!file) return;
+  const cat = activeCategory ? catByKey(activeCategory) : null;
+  if(!cat){ toast('Select a category tab first, then bulk-upload its CSV.'); e.target.value=''; return; }
+  const text = await file.text();
+  const lines = text.split(/\r?\n/).filter(l=>l.trim().length);
+  if(lines.length<2){ toast('No data rows found in file.'); e.target.value=''; return; }
+  const cols = templateColumns(cat);
+  const headerMap = {}; cols.forEach(c=> headerMap[c.label.toLowerCase()] = c.key);
+  const headers = parseCsvLine(lines[0]).map(h=>h.trim().toLowerCase());
+  const parsedRows = [];
+  for(let i=1;i<lines.length;i++){
+    const vals = parseCsvLine(lines[i]);
+    const row = {};
+    headers.forEach((h,idx)=>{ const key = headerMap[h]; if(key) row[key] = (vals[idx]||'').trim(); });
+    if(row.name) parsedRows.push(row);
+  }
+  if(!parsedRows.length){ toast('No valid rows found (each row needs at least a Name).'); e.target.value=''; return; }
+  toast('Importing ' + parsedRows.length + ' row(s)…');
+  const existing = contactCache.filter(c=>c.category===cat.key);
+  const existingByName = new Map(existing.map(c=>[normalize(c.name), c.id]));
+  let added=0, updated=0, failed=0;
+  for(const row of parsedRows){
+    const key = normalize(row.name);
+    try{
+      if(existingByName.has(key)){
+        await db.collection('contacts').doc(existingByName.get(key)).update({ ...row, category: cat.key });
+        updated++;
+      }else{
+        await db.collection('contacts').add({ ...row, category: cat.key, createdAt: new Date().toISOString() });
+        added++;
+      }
+    }catch(err){ failed++; }
+  }
+  logAudit(`Bulk import (${cat.label}): ${added} added, ${updated} updated, ${failed} failed`);
+  toast(`${added} added, ${updated} updated${failed?', '+failed+' failed':''}.`);
+  e.target.value='';
+}
+
+/* =========================================================
+   EXPORT CSV
+========================================================= */
+async function exportCsv(){
+  const rows = contactCache.filter(matchesFilters);
+  if(!rows.length){ toast('Nothing to export.'); return; }
+  const allCols = ['category',...COMMON_FIELDS.map(f=>f.key)];
+  const specific = new Set();
+  rows.forEach(r=>{ const cat=catByKey(r.category); if(cat) cat.fields.forEach(f=>specific.add(f.key)); });
+  const cols = allCols.concat([...specific]);
+  const header = cols.join(',');
+  const body = rows.map(r=> cols.map(c=> csvEscape(r[c])).join(',')).join('\n');
+  const csv = header + '\n' + body + '\n';
+  downloadBlob('ImportantContacts_export.csv', csv);
+}
+
+/* =========================================================
+   BULK PHOTO UPLOAD (naming-convention matching)
+========================================================= */
+function parsePhotoFilename(filename){
+  const base = filename.replace(/\.[^.]+$/, '');
+  const idx = base.indexOf('_');
+  if(idx<0) return null;
+  return { code: base.slice(0,idx), ident: base.slice(idx+1) };
+}
+async function handlePhotoFiles(e){
+  const files = Array.from(e.target.files||[]);
+  if(!files.length) return;
+  const panel = document.getElementById('bulkPhotoPanel');
+  panel.classList.remove('hidden');
+  panel.innerHTML = '<div class="small">Matching ' + files.length + ' file(s) against the naming convention (CATEGORYCODE_Identifier.jpg)…</div>';
+  const matched = [], unmatched = [];
+  for(const f of files){
+    const parsed = parsePhotoFilename(f.name);
+    const cat = parsed ? catByCode(parsed.code) : null;
+    if(!cat){ unmatched.push({file:f, reason:'Category code not recognised'}); continue; }
+    const wantIdent = normalize(parsed.ident);
+    const candidates = contactCache.filter(c=> c.category===cat.key && normalize(c[cat.idField])===wantIdent);
+    if(candidates.length===1){ matched.push({file:f, cat, contact:candidates[0]}); }
+    else if(candidates.length===0){ unmatched.push({file:f, cat, reason:'No contact found with ' + cat.idLabel + ' = "' + parsed.ident.replace(/_/g,' ') + '"'}); }
+    else { unmatched.push({file:f, cat, reason:'Multiple contacts share that ' + cat.idLabel + ' — pick one below', candidates}); }
+  }
+  // attach matched
+  let ok=0, fail=0;
+  for(const m of matched){
+    try{
+      const up = await assetsCap.upload(m.file);
+      await db.collection('contacts').doc(m.contact.id).update({ photoUrl: up.url });
+      ok++;
+    }catch(err){ fail++; unmatched.push({file:m.file, cat:m.cat, reason:'Upload failed: '+(err.message||err.code)}); }
+  }
+  logAudit(`Bulk photo upload: ${ok} attached, ${unmatched.length} need attention`);
+  renderPhotoReport(ok, unmatched);
+}
+function renderPhotoReport(ok, unmatched){
+  const panel = document.getElementById('bulkPhotoPanel');
+  let html = `<div class="section-title" style="margin-top:0">Bulk photo upload result</div>
+    <p class="small">${ok} photo(s) matched and attached automatically.</p>`;
+  if(unmatched.length){
+    html += `<div class="table-scroll"><table class="rep"><thead><tr><th>File</th><th>Issue</th><th>Assign manually</th></tr></thead><tbody>`;
+    unmatched.forEach((u,i)=>{
+      const catOptions = CATEGORIES.map(c=>`<option value="${c.key}" ${u.cat&&u.cat.key===c.key?'selected':''}>${c.label}</option>`).join('');
+      html += `<tr>
+        <td>${escapeHtml(u.file.name)}</td>
+        <td>${escapeHtml(u.reason)}</td>
+        <td>
+          <select id="uc_${i}" onchange="fillManualContacts(${i})">${catOptions}</select>
+          <select id="up_${i}"></select>
+          <button class="btn btn-ghost btn-sm" onclick="manualAttach(${i})">Attach</button>
+        </td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+  html += `<div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="document.getElementById('bulkPhotoPanel').classList.add('hidden')">Close</button></div>`;
+  panel.innerHTML = html;
+  window._pendingPhotoFiles = unmatched;
+  unmatched.forEach((u,i)=> fillManualContacts(i));
+}
+function fillManualContacts(i){
+  const catKey = document.getElementById('uc_'+i).value;
+  const sel = document.getElementById('up_'+i);
+  const opts = contactCache.filter(c=>c.category===catKey).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  sel.innerHTML = opts.map(c=>`<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+}
+async function manualAttach(i){
+  const entry = window._pendingPhotoFiles[i];
+  const contactId = document.getElementById('up_'+i).value;
+  if(!contactId){ toast('No contact selected.'); return; }
+  try{
+    const up = await assetsCap.upload(entry.file);
+    await db.collection('contacts').doc(contactId).update({ photoUrl: up.url });
+    logAudit('Manually attached photo: ' + entry.file.name);
+    toast('Photo attached.');
+    document.querySelectorAll('table.rep tr')[i+1] && (document.querySelectorAll('table.rep tr')[i+1].style.opacity='.4');
+  }catch(err){ toast('Could not attach: ' + (err.message||err.code)); }
+}
+
+/* =========================================================
+   WIRE UP
+========================================================= */
+document.getElementById('search').addEventListener('input', renderGrid);
+document.getElementById('districtFilter').addEventListener('change', renderGrid);
+document.getElementById('partyFilter').addEventListener('change', renderGrid);
+document.getElementById('addBtn').addEventListener('click', ()=> openContactModal(null));
+document.getElementById('templateBtn').addEventListener('click', downloadTemplate);
+document.getElementById('bulkCsvBtn').addEventListener('click', ()=> document.getElementById('csvFile').click());
+document.getElementById('csvFile').addEventListener('change', handleCsvUpload);
+document.getElementById('bulkPhotoBtn').addEventListener('click', ()=> document.getElementById('photoFiles').click());
+document.getElementById('photoFiles').addEventListener('change', handlePhotoFiles);
+document.getElementById('exportBtn').addEventListener('click', exportCsv);
+document.getElementById('ulbSelect').addEventListener('change', e=> renderUlbSnapshot(e.target.value));
+document.getElementById('clearUlbBtn').addEventListener('click', ()=>{ document.getElementById('ulbSelect').value=''; renderUlbSnapshot(''); });
+document.getElementById('manageUlbMapBtn').addEventListener('click', openUlbMapManager);
+document.getElementById('ulbMapCsvFile').addEventListener('change', handleUlbMapCsvUpload);
+
+initCapabilities();
+</script>
+</body>
+</html>
