@@ -644,16 +644,17 @@ function populateUlbSelect(){
 }
 function refreshUlbSnapshotIfOpen(){ if(currentUlbFocus) renderUlbSnapshot(currentUlbFocus); }
 
-function miniCard(role, c){
+function miniCard(role, c, details){
   if(!c) return `<div class="ccard" style="opacity:.55;">
     <div class="avatar-fallback">?</div>
     <div class="body"><span class="badge badge-navy">${escapeHtml(role)}</span><h3 class="muted" style="font-style:italic;font-size:.95rem;">Not linked yet</h3></div>
   </div>`;
   const photo = c.photoUrl ? `<img class="photo" src="${c.photoUrl}" alt="">` : `<div class="avatar-fallback">${initials(c.name)}</div>`;
   const call = c.primaryMobile ? `<div class="call-line"><button type="button" class="mobile-btn" onclick="openCallSheet('${escapeHtml(c.primaryMobile)}')">📞 ${escapeHtml(c.primaryMobile)}</button></div>` : '';
+  const extra = (details||[]).filter(d=>d.value).map(d=>`<div class="line"><span class="line-label">${escapeHtml(d.label)}:</span> ${escapeHtml(d.value)}</div>`).join('');
   return `<div class="ccard">
     ${photo}
-    <div class="body"><span class="badge badge-navy">${escapeHtml(role)}</span><h3>${escapeHtml(c.name)}</h3>${call}</div>
+    <div class="body"><span class="badge badge-navy">${escapeHtml(role)}</span><h3>${escapeHtml(c.name)}</h3>${extra}${call}</div>
   </div>`;
 }
 function renderUlbSnapshot(ulbName){
@@ -664,11 +665,12 @@ function renderUlbSnapshot(ulbName){
   const mapping = ulbMapCache.find(m=> normalize(m.ulbName)===normalize(ulbName));
   const commissioner = contactCache.find(c=>c.category==='commissioner' && normalize(c.ulbName)===normalize(ulbName));
   const mayor = contactCache.find(c=>c.category==='ulb' && normalize(c.ulbName)===normalize(ulbName));
-  const mla = contactCache.find(c=>c.category==='mla' && (
+  const mapConstituencies = (mapping && mapping.constituency) ? mapping.constituency.split(',').map(normalize).filter(Boolean) : [];
+  const mlas = contactCache.filter(c=>c.category==='mla' && (
     (c.ulbs && c.ulbs.split(',').some(v=>normalize(v)===normalize(ulbName))) ||
-    (mapping && mapping.constituency && normalize(c.constituency)===normalize(mapping.constituency))
-  ));
-  const district = (mapping && mapping.district) || (commissioner&&commissioner.district) || (mayor&&mayor.district) || (mla&&mla.district) || '';
+    (mapConstituencies.length && mapConstituencies.includes(normalize(c.constituency)))
+  )).sort((a,b)=>(a.constituency||'').localeCompare(b.constituency||''));
+  const district = (mapping && mapping.district) || (commissioner&&commissioner.district) || (mayor&&mayor.district) || (mlas[0]&&mlas[0].district) || '';
   const collector = district ? contactCache.find(c=>c.category==='collector' && normalize(c.district)===normalize(district)) : null;
   const jc = district ? contactCache.find(c=>c.category==='jc' && normalize(c.district)===normalize(district)) : null;
   const localMinister = district ? contactCache.find(c=>c.category==='lmin' && c.homeDistrict && normalize(c.homeDistrict)===normalize(district)) : null;
@@ -684,9 +686,8 @@ function renderUlbSnapshot(ulbName){
     <h2>${escapeHtml(ulbName)}${district?' · '+escapeHtml(district):''}</h2>
     ${note?`<div class="note">${note}</div>`:''}
     <div class="card-grid">
-      ${miniCard('ULB Commissioner', commissioner)}
       ${miniCard('Mayor / Chairperson', mayor)}
-      ${miniCard('MLA', mla)}
+      ${mlas.length ? mlas.map(m=>miniCard('MLA', m, [{label:'Constituency', value:m.constituency}])).join('') : miniCard('MLA', null)}
       ${miniCard('Local Minister', localMinister)}
       ${miniCard('In-charge Minister', inchargeMinister)}
       ${miniCard('Collector', collector)}
@@ -694,6 +695,7 @@ function renderUlbSnapshot(ulbName){
       ${miniCard('UDA Chairperson', uda)}
       ${miniCard('Lok Sabha MP', lsmp)}
       ${miniCard('Rajya Sabha MP', rsmp)}
+      ${miniCard('ULB Commissioner', commissioner)}
     </div>
   </div>`;
 }
