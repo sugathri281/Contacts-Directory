@@ -687,7 +687,6 @@ function renderUlbSnapshot(ulbName){
     <h2>${escapeHtml(ulbName)}${district?' · '+escapeHtml(district):''}</h2>
     ${note?`<div class="note">${note}</div>`:''}
     <div class="card-grid">
-      ${miniCard('Mayor / Chairperson', mayor)}
       ${mlas.length ? mlas.map(m=>miniCard('MLA', m, [{label:'Constituency', value:m.constituency}])).join('') : miniCard('MLA', null)}
       ${miniCard('Local Minister', localMinister)}
       ${miniCard('In-charge Minister', inchargeMinister)}
@@ -696,6 +695,7 @@ function renderUlbSnapshot(ulbName){
       ${miniCard('UDA Chairperson', uda)}
       ${miniCard('Lok Sabha MP', lsmp)}
       ${miniCard('Rajya Sabha MP', rsmp)}
+      ${miniCard('Mayor / Chairperson', mayor)}
       ${miniCard('ULB Commissioner', commissioner)}
     </div>
   </div>`;
