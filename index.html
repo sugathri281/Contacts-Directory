@@ -215,6 +215,7 @@ table.rep th{background:var(--navy-tint);color:var(--navy);font-weight:700;font-
       <button class="btn btn-ghost btn-sm" id="bulkCsvBtn">⭱ Bulk upload</button>
       <button class="btn btn-ghost btn-sm" id="bulkPhotoBtn">🖼 Photos</button>
       <button class="btn btn-ghost btn-sm" id="exportBtn">⭳ Export</button>
+      <button class="btn btn-ghost btn-sm" id="vcfBtn">📱 Phone contacts</button>
       <button class="btn btn-marigold btn-sm" id="addBtn">+ Add contact</button>
     </div>
   </div>
@@ -316,8 +317,8 @@ const YOUR_FIREBASE_CONFIG = {
 let fbAuth=null, fbSignInWithEmailAndPassword=null, fbSignOut=null;
 let db=null, assetsCap=null;
 
-function downloadBlob(filename, data){
-  const blob = new Blob([data], { type:'text/csv;charset=utf-8;' });
+function downloadBlob(filename, data, mime){
+  const blob = new Blob([data], { type: mime || 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = filename;
@@ -1036,6 +1037,82 @@ async function exportCsv(){
   downloadBlob('ImportantContacts_export.csv', csv);
 }
 
+
+/* =========================================================
+   EXPORT TO PHONE CONTACTS (.vcf / vCard 3.0)
+   Exports whatever is currently shown (category tab + search + filters),
+   so "All" exports everything. Name + role in the display name and the
+   photo are embedded so the phone shows them on an incoming call.
+========================================================= */
+function vcfEscape(v){
+  return String(v==null?'':v).replace(/\\/g,'\\\\').replace(/\r?\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+}
+function vcfFold(line){
+  // RFC 6350: lines are folded at 75 characters; continuation lines start with a space
+  if(line.length<=74) return line;
+  const parts=[line.slice(0,74)];
+  for(let i=74;i<line.length;i+=73) parts.push(' '+line.slice(i,i+73));
+  return parts.join('\r\n');
+}
+function vcfPhone(raw){
+  if(!raw) return '';
+  let d=String(raw).trim();
+  const plus=d.startsWith('+');
+  d=d.replace(/\D/g,'');
+  if(!d) return '';
+  if(plus) return '+'+d;
+  if(d.length===10) return '+91'+d;
+  if(d.length===11 && d.startsWith('0')) return '+91'+d.slice(1);
+  if(d.length===12 && d.startsWith('91')) return '+'+d;
+  return d; // landline / unusual format: leave as typed digits
+}
+function vcfRoleLine(c){
+  const dash=' – ';
+  switch(c.category){
+    case 'mla': return 'MLA'+(c.constituency?dash+c.constituency:'');
+    case 'lsmp': return 'MP'+(c.constituency?dash+c.constituency:'');
+    case 'rsmp': return 'Rajya Sabha MP';
+    case 'lmin': return 'Minister'+(c.homeDistrict?dash+c.homeDistrict:'');
+    case 'icmin': return 'In-charge Minister'+(c.districtsIncharge?dash+c.districtsIncharge:'');
+    case 'collector': return 'Collector'+(c.district?dash+c.district:'');
+    case 'jc': return 'Joint Collector'+(c.district?dash+c.district:'');
+    case 'ulb': return (c.ulbType==='Municipal Corporation'?'Mayor':'Chairperson')+(c.ulbName?dash+c.ulbName:'');
+    case 'uda': return 'UDA Chairperson'+(c.udaName?dash+c.udaName:'');
+    case 'commissioner': return 'Commissioner'+(c.ulbName?dash+c.ulbName:'');
+    default: return '';
+  }
+}
+function buildVcard(c){
+  const phones=[vcfPhone(c.primaryMobile), vcfPhone(c.altMobile)].filter(Boolean);
+  if(!phones.length) return null; // nothing to show a caller ID for
+  const role=vcfRoleLine(c);
+  const display=(c.name||'').trim()+(role?' ('+role+')':'');
+  const cat=catByKey(c.category);
+  const L=[];
+  L.push('BEGIN:VCARD','VERSION:3.0');
+  L.push('N:'+vcfEscape(display)+';;;;');
+  L.push('FN:'+vcfEscape(display));
+  L.push('ORG:'+vcfEscape(cat?cat.label:'Important Contacts'));
+  if(role) L.push('TITLE:'+vcfEscape(role));
+  if(phones[0]) L.push('TEL;TYPE=CELL,VOICE,PREF:'+phones[0]);
+  if(phones[1]) L.push('TEL;TYPE=CELL,VOICE:'+phones[1]);
+  if(c.email) L.push('EMAIL;TYPE=INTERNET:'+vcfEscape(c.email));
+  if(c.officeAddress) L.push('ADR;TYPE=WORK:;;'+vcfEscape(c.officeAddress)+';;;;');
+  if(c.notes) L.push('NOTE:'+vcfEscape(c.notes));
+  const m=/^data:image\/(jpeg|png);base64,(.+)$/.exec(c.photoUrl||'');
+  if(m) L.push('PHOTO;ENCODING=b;TYPE='+(m[1]==='png'?'PNG':'JPEG')+':'+m[2]);
+  L.push('END:VCARD');
+  return L.map(vcfFold).join('\r\n');
+}
+function exportVcf(){
+  const rows=contactCache.filter(matchesFilters).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  const cards=[]; let skipped=0, withPhoto=0;
+  rows.forEach(c=>{ const v=buildVcard(c); if(v){ cards.push(v); if(c.photoUrl) withPhoto++; } else skipped++; });
+  if(!cards.length){ toast('No contacts with a mobile number to export.'); return; }
+  downloadBlob('ImportantContacts.vcf', cards.join('\r\n')+'\r\n', 'text/vcard;charset=utf-8;');
+  toast(`Exported ${cards.length} contact(s), ${withPhoto} with photo${skipped?` (${skipped} skipped — no mobile number)`:''}.`);
+}
+
 /* =========================================================
    BULK PHOTO UPLOAD (naming-convention matching)
 ========================================================= */
@@ -1131,6 +1208,7 @@ document.getElementById('csvFile').addEventListener('change', handleCsvUpload);
 document.getElementById('bulkPhotoBtn').addEventListener('click', ()=> document.getElementById('photoFiles').click());
 document.getElementById('photoFiles').addEventListener('change', handlePhotoFiles);
 document.getElementById('exportBtn').addEventListener('click', exportCsv);
+document.getElementById('vcfBtn').addEventListener('click', exportVcf);
 document.getElementById('ulbSelect').addEventListener('change', e=> renderUlbSnapshot(e.target.value));
 document.getElementById('clearUlbBtn').addEventListener('click', ()=>{ document.getElementById('ulbSelect').value=''; renderUlbSnapshot(''); });
 document.getElementById('manageUlbMapBtn').addEventListener('click', openUlbMapManager);
